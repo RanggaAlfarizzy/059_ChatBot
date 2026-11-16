@@ -15,9 +15,9 @@ app.get("/", (req, res) => {
 
 app.post("/api/chat", async (req, res) => {
     try {
-        const { message } = req.body;
+        const { messages } = req.body;
 
-        if (!message || !Array.isArray(message)) {
+        if (!messages || !Array.isArray(messages)) {
             return res.status(400).json({ 
                 error: "Invalid harus berupa array" 
             });
@@ -33,7 +33,7 @@ app.post("/api/chat", async (req, res) => {
                 },
                 body: JSON.stringify({
                     model: "inclusionai/ling-3.2-flash-free",
-                    messages: message,
+                    messages: messages,
                     temperature: 0.7,
                     max_tokens: 1000,
                     stream: true
@@ -97,7 +97,7 @@ app.post("/api/chat", async (req, res) => {
                     json.choices[0]?.delta.content;
 
                     if (content) {
-                        res.write(`data: ${JSON.stringify({ content })}\n\n`);
+                        res.write(`data: ${JSON.stringify(content)}\n\n`);
                     }
                 } catch (error) {
                     console.error(
